@@ -8,9 +8,30 @@ app = Dash(
     meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1'}]
 )
 
-# ✅ Only import this AFTER the app is created
-from app.app_routes import layout, register_callbacks
+# 👇 Add this block right here:
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <title>AI Adoption Metrics Dashboard</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+            <!-- Removed theme-setting script -->
+        </footer>
+    </body>
+</html>
+'''
 
+# 🔁 Then continue as normal:
+from .app_routes import layout, register_callbacks
 app.layout = layout
 register_callbacks(app)
 

@@ -1,34 +1,34 @@
 from dash import html, dcc
-from dash.dependencies import Input, Output
-from app.components.sidebar import sidebar
+from dash.dependencies import Input, Output, State
+from .components.sidebar import sidebar
 
 # Import layouts from your different metric sections
-from layouts.dashboard import dashboard_layout
+from .layouts.dashboard import dashboard_layout
 
 # DORA Metrics
-from layouts.dora.deployment_frequency import layout as dora_deployment_frequency_layout
-from layouts.dora.lead_time import layout as dora_lead_time_layout
-from layouts.dora.failure_rate import layout as dora_change_failure_rate_layout
-from layouts.dora.restore_time import layout as dora_time_to_restore_layout
+from .layouts.dora.deployment_frequency import layout as dora_deployment_frequency_layout
+from .layouts.dora.lead_time import layout as dora_lead_time_layout
+from .layouts.dora.failure_rate import layout as dora_change_failure_rate_layout
+from .layouts.dora.restore_time import layout as dora_time_to_restore_layout
 
 # SPACE Metrics
-from layouts.space.satisfaction import layout as space_satisfaction_layout
-from layouts.space.performance import layout as space_performance_layout
-from layouts.space.activity import layout as space_activity_layout
-from layouts.space.communication import layout as space_communication_layout
-from layouts.space.efficiency import layout as space_efficiency_layout
+from .layouts.space.satisfaction import layout as space_satisfaction_layout
+from .layouts.space.performance import layout as space_performance_layout
+from .layouts.space.activity import layout as space_activity_layout
+from .layouts.space.communication import layout as space_communication_layout
+from .layouts.space.efficiency import layout as space_efficiency_layout
 
 # Agile Metrics
-from layouts.agile.velocity import layout as agile_velocity_layout
-from layouts.agile.cycle_time import layout as agile_cycle_time_layout
-from layouts.agile.sprint_burndown import layout as agile_sprint_burndown_layout
-from layouts.agile.ai_adoption import layout as agile_ai_adoption_layout
+from .layouts.agile.velocity import layout as agile_velocity_layout
+from .layouts.agile.cycle_time import layout as agile_cycle_time_layout
+from .layouts.agile.sprint_burndown import layout as agile_sprint_burndown_layout
+from .layouts.agile.ai_adoption import layout as agile_ai_adoption_layout
 
 # Settings (Optional)
-from layouts.settings import layout as settings_layout  # If you have a settings page
+from .layouts.settings import layout as settings_layout  # If you have a settings page
 
 # app/app_routes.py
-from layouts import dashboard  # 👈 This line ensures callbacks in dashboard.py are registered
+from .layouts import dashboard  # 👈 This line ensures callbacks in dashboard.py are registered
 # 🌐 Main layout structure with routing
 layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -46,7 +46,9 @@ def register_callbacks(app):
         Input('theme-store', 'data')
     )
     def display_page(pathname, theme_data):
-        theme_class = 'dark-theme' if theme_data.get('theme') == 'dark' else ''
+        print(f"DISPLAY_PAGE - Path: {pathname}, Theme data: {theme_data}") # DEBUG
+        theme_class = 'dark-theme' if theme_data and theme_data.get('theme') == 'dark' else ''
+        print(f"DISPLAY_PAGE - Applying class: '{theme_class}'") # DEBUG
         content = [sidebar]
 
         # Dashboard
@@ -98,3 +100,23 @@ def register_callbacks(app):
             ]))
 
         return content, theme_class
+
+    @app.callback(
+        Output('theme-store', 'data'),
+        Output('theme-toggle', 'children'),
+        Input('theme-toggle', 'n_clicks'),
+        State('theme-store', 'data'),
+        prevent_initial_call=True
+    )
+    def toggle_theme(n_clicks, current_theme_data):
+        print(f"TOGGLE_THEME - Clicked: {n_clicks}, Current data: {current_theme_data}") # DEBUG
+        if not current_theme_data:
+            current_theme = 'light'
+        else:
+            current_theme = current_theme_data.get('theme', 'light')
+
+        new_theme = 'dark' if current_theme == 'light' else 'light'
+        new_icon = '☀️' if new_theme == 'dark' else '🌙'
+        print(f"TOGGLE_THEME - Setting new theme: {new_theme}") # DEBUG
+
+        return {'theme': new_theme}, new_icon

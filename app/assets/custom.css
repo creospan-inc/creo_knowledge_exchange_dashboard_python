@@ -1,137 +1,129 @@
-
-/* Light theme (default) */
-:root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --card-bg: #ffffff;
-    --card-header-bg: #f8f9fa;
-    --muted-text: #6c757d;
-    --border-color: #dee2e6;
-    --sidebar-bg: #f8f9fa;
-    --sidebar-text: #333333;
-    --button-primary: #0d6efd;
-    --button-secondary: #6c757d;
-    --avatar-bg: #e9ecef;
-    --avatar-text: #495057;
-}
-
-/* Dark theme */
-[data-theme="dark"] {
-    --bg-color: #212529;
-    --text-color: #f8f9fa;
-    --card-bg: #2c3034;
-    --card-header-bg: #343a40;
-    --muted-text: #adb5bd;
-    --border-color: #495057;
-    --sidebar-bg: #343a40;
-    --sidebar-text: #f8f9fa;
-    --button-primary: #0d6efd;
-    --button-secondary: #6c757d;
-    --avatar-bg: #495057;
-    --avatar-text: #e9ecef;
-}
-
+/* Light Theme Defaults (Mostly Bootstrap + Custom) */
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: all 0.3s ease;
+    background-color: #ffffff; /* Default light background */
+    color: #212529; /* Default light text */
 }
-
+.main-header {
+    font-size: 30px;
+    font-weight: bold;
+}
 .card {
-    background-color: var(--card-bg);
-    border-color: var(--border-color);
-    color: var(--text-color);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff; /* Card background */
+    border: 1px solid #dee2e6; /* Subtle border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    height: 100%;
 }
-
-.card-header {
-    background-color: var(--card-header-bg);
-    border-color: var(--border-color);
+/* Removed .card-dark as it's handled by .dark-theme .card */
+.metric-value {
+    font-size: 28px;
+    font-weight: bold;
 }
-
-.text-muted {
-    color: var(--muted-text) !important;
+.metric-delta {
+    font-size: 12px;
+    color: #6c757d;
 }
-
-.nav-tabs .nav-link {
-    color: var(--text-color);
+.metric-delta-up {
+    color: #198754; /* Bootstrap 5 green */
 }
-
-.nav-tabs .nav-link.active {
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    border-color: var(--border-color);
+.metric-delta-down {
+    color: #dc3545; /* Bootstrap 5 red */
 }
-
-.avatar {
-    background-color: var(--avatar-bg);
-    color: var(--avatar-text);
-    width: 40px;
-    height: 40px;
+.section-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
-
+.subsection-header {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 .sidebar {
-    background-color: var(--sidebar-bg);
-    color: var(--sidebar-text);
-}
-
-.btn-outline-light {
-    border-color: var(--border-color);
-    color: var(--text-color);
-}
-
-.btn-outline-light:hover {
-    background-color: var(--card-header-bg);
-    color: var(--text-color);
-}
-
-.theme-toggle-icon {
-    transition: transform 0.5s ease;
-}
-
-[data-theme="dark"] .sun-icon {
-    display: inline-block;
-}
-
-[data-theme="dark"] .moon-icon {
-    display: none;
-}
-
-[data-theme="light"] .sun-icon {
-    display: none;
-}
-
-[data-theme="light"] .moon-icon {
-    display: inline-block;
-}
-/* Sidebar layout */
-.sidebar {
+    height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
-    width: 240px;
-    height: 100vh;
     padding: 20px;
+    width: 250px; /* Adjusted width */
+    z-index: 1;
     overflow-y: auto;
-    background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color);
-    z-index: 1000;
+    background-color: #f8f9fa; /* Light sidebar background */
+    border-right: 1px solid #dee2e6;
 }
-
 .content {
-    margin-left: 240px;
+    margin-left: 250px; /* Adjusted margin to match sidebar */
     padding: 20px;
-    transition: margin-left 0.3s ease;
 }
-
-/* NavLink styles (optional, for polish) */
-.sidebar .nav-link {
-    color: var(--sidebar-text);
-    padding: 10px 15px;
+.nav-link {
+    padding: 8px 16px;
+    margin: 4px 0;
     border-radius: 4px;
-    margin-bottom: 5px;
+    color: #212529; /* Default nav link color */
+}
+.nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.nav-link.active {
+    background-color: #0d6efd; /* Bootstrap 5 primary */
+    color: white;
+}
+.nav-header {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    color: #6c757d;
+}
+.text-muted {
+    color: #6c757d !important; /* Ensure light muted color */
 }
 
-.sidebar .nav-link.active {
-    background-color: var(--button-primary);
-    color: #fff;
+/* Dark Theme Overrides - Applied when #main-container has .dark-theme class */
+#main-container.dark-theme body {
+    background-color: #121212;
+    color: #e0e0e0;
 }
+#main-container.dark-theme {
+     background-color: #121212;
+     color: #e0e0e0;
+}
+#main-container.dark-theme .card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+#main-container.dark-theme .sidebar {
+    background-color: #1e1e1e;
+    border-right: 1px solid #444;
+}
+#main-container.dark-theme .nav-link {
+    color: #e0e0e0;
+}
+#main-container.dark-theme .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+#main-container.dark-theme .nav-link.active {
+    background-color: #3b71ca;
+    color: white;
+}
+#main-container.dark-theme .nav-header {
+    color: #adb5bd;
+}
+#main-container.dark-theme .main-header,
+#main-container.dark-theme .section-header,
+#main-container.dark-theme .subsection-header {
+    color: #ffffff;
+}
+#main-container.dark-theme .text-muted {
+    color: #adb5bd !important;
+}
+#main-container.dark-theme .plotly-graph-div {
+     /* filter: invert(1) hue-rotate(180deg); */
+     /* For true Plotly dark theme, update layout.template='plotly_dark' in Python */
+}
+
