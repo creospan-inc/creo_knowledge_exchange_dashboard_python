@@ -1,8 +1,8 @@
 from dash import html, dcc
 from dash.dependencies import Input, Output, State
-from .components.sidebar import sidebar
+import dash.exceptions
 
-# Import layouts from your different metric sections
+from .components.sidebar import sidebar
 from .layouts.dashboard import dashboard_layout
 
 # DORA Metrics
@@ -24,21 +24,32 @@ from .layouts.agile.cycle_time import layout as agile_cycle_time_layout
 from .layouts.agile.sprint_burndown import layout as agile_sprint_burndown_layout
 from .layouts.agile.ai_adoption import layout as agile_ai_adoption_layout
 
-# Settings (Optional)
-from .layouts.settings import layout as settings_layout  # If you have a settings page
+# Settings
+from .layouts.settings import layout as settings_layout
 
-# app/app_routes.py
-from .layouts import dashboard  # 👈 This line ensures callbacks in dashboard.py are registered
-# 🌐 Main layout structure with routing
+# Ensure callbacks in dashboard.py are registered
+from .layouts import dashboard
+
+# 🌐 Main layout structure
 layout = html.Div([
     dcc.Location(id='url', refresh=False),
     dcc.Store(id='theme-store', data={'theme': 'light'}),
-    html.Div(id='page-content', className='content')
-], id='main-container')
+
+    # Theme toggle button bar
+    html.Div([
+        html.Button("🌙", id="theme-toggle", n_clicks=0, className="btn btn-outline-secondary me-2"),
+    ], className="d-flex justify-content-end p-2 border-bottom"),
+
+    # Dynamic content container with theme class
+    html.Div([
+        html.Div(id='page-content', className='content')
+    ], className='light-theme', id='main-container')
+])
 
 
-# 🔁 Routing callback
+# 🔁 Register routing and theming callbacks
 def register_callbacks(app):
+    # Page rendering and theme class application
     @app.callback(
         Output('page-content', 'children'),
         Output('main-container', 'className'),
@@ -46,9 +57,10 @@ def register_callbacks(app):
         Input('theme-store', 'data')
     )
     def display_page(pathname, theme_data):
-        print(f"DISPLAY_PAGE - Path: {pathname}, Theme data: {theme_data}") # DEBUG
-        theme_class = 'dark-theme' if theme_data and theme_data.get('theme') == 'dark' else ''
-        print(f"DISPLAY_PAGE - Applying class: '{theme_class}'") # DEBUG
+        print(f"DISPLAY_PAGE - Path: {pathname}, Theme data: {theme_data}")
+        theme_class = 'dark-theme' if theme_data and theme_data.get('theme') == 'dark' else 'light-theme'
+        print(f"DISPLAY_PAGE - Applying class: '{theme_class}'")
+
         content = [sidebar]
 
         # Dashboard
@@ -101,22 +113,31 @@ def register_callbacks(app):
 
         return content, theme_class
 
+    # Theme toggle handler with protection from phantom triggers
     @app.callback(
         Output('theme-store', 'data'),
-        Output('theme-toggle', 'children'),
         Input('theme-toggle', 'n_clicks'),
         State('theme-store', 'data'),
         prevent_initial_call=True
     )
     def toggle_theme(n_clicks, current_theme_data):
-        print(f"TOGGLE_THEME - Clicked: {n_clicks}, Current data: {current_theme_data}") # DEBUG
-        if not current_theme_data:
-            current_theme = 'light'
-        else:
-            current_theme = current_theme_data.get('theme', 'light')
+        print(f"TOGGLE_THEME - Clicked: {n_clicks}, Current data: {current_theme_data}")
 
+        if n_clicks is None:
+            raise dash.exceptions.PreventUpdate
+
+        current_theme = current_theme_data.get('theme', 'light') if current_theme_data else 'light'
         new_theme = 'dark' if current_theme == 'light' else 'light'
-        new_icon = '☀️' if new_theme == 'dark' else '🌙'
-        print(f"TOGGLE_THEME - Setting new theme: {new_theme}") # DEBUG
+        print(f"TOGGLE_THEME - New theme: {new_theme}")
+        return {'theme': new_theme}
 
-        return {'theme': new_theme}, new_icon
+    # Keep the icon in sync with current theme state
+    @app.callback(
+        Output('theme-toggle', 'children'),
+        Input('theme-store', 'data'),
+        prevent_initial_call=True
+    )
+    def update_toggle_icon(theme_data):
+        if theme_data.get('theme') == 'dark':
+            return '☀️'
+        return '🌙'

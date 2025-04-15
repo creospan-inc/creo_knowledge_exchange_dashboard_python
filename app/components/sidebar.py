@@ -8,12 +8,12 @@ sidebar = html.Div(
             html.H4("AI Metrics", className="d-inline-block ms-2 mb-4"),
         ], className="d-flex align-items-center"),
 
-        html.Button(
-            id="theme-toggle",
-            children="🌙",
-            className="btn btn-outline-secondary mb-3",
-            style={"width": "40px"}
-        ),
+        # html.Button(
+        #     id="theme-toggle",
+        #     children="🌙",
+        #     className="btn btn-outline-secondary mb-3",
+        #     style={"width": "40px"}
+        # ),
 
         html.H6("Navigation", className="nav-header"),
         dbc.Nav(
