@@ -19,6 +19,7 @@ from app.data.metrics_data import (
     cycle_time_data,
     sprint_burndown_data,
     ai_adoption_by_team,
+    activity_trend_data,
     lead_time_data, deployment_frequency_data
 )
 
@@ -167,27 +168,27 @@ def create_dashboard_space():
                     title="Quality (%)"
                 ).update_layout(height=300))
             ], width=4),
-        #
-        #     dbc.Col([
-        #         html.H5("Activity"),
-        #         dcc.Graph(figure=px.bar(
-        #             activity_data,
-        #             x="Month", y="Prompts",
-        #             title="AI Prompts"
-        #         ).update_layout(height=300))
-        #     ], width=4)
-        # ], className="mb-4"),
-        #
-        # dbc.Row([
-        #     dbc.Col([
-        #         html.H5("Communication"),
-        #         dcc.Graph(figure=px.line(
-        #             communication_data,
-        #             x="Month", y="Collaboration",
-        #             title="Collaboration"
-        #         ).update_layout(height=300))
-        #     ], width=6),
-        #
+
+            dbc.Col([
+                html.H5("Activity"),
+                dcc.Graph(figure=px.bar(
+                    activity_trend_data,
+                    x="Month", y="Prompts",
+                    title="AI Prompts"
+                ).update_layout(height=300))
+            ], width=4)
+        ], className="mb-4"),
+
+        dbc.Row([
+            dbc.Col([
+                html.H5("Communication"),
+                dcc.Graph(figure=px.line(
+                    communication_data,
+                    x="Month", y="Collaboration",
+                    title="Collaboration"
+                ).update_layout(height=300))
+            ], width=6),
+
             dbc.Col([
                 html.H5("Efficiency"),
                 dcc.Graph(figure=px.bar(
@@ -204,12 +205,12 @@ def create_dashboard_agile():
         dbc.Row([
             dbc.Col([
                 html.H5("Velocity"),
-                dcc.Graph(figure=px.line(velocity_data, x="Sprint", y="Completed",
+                dcc.Graph(figure=px.line(velocity_data, x="Sprint", y="Velocity",
                     title="Velocity").update_layout(height=350))
             ], width=6),
             dbc.Col([
                 html.H5("Cycle Time"),
-                dcc.Graph(figure=px.bar(cycle_time_data, x="Month", y="AI-Assisted",
+                dcc.Graph(figure=px.bar(cycle_time_data, x="Month", y="Cycle Time",
                     title="Cycle Time (Days)").update_layout(height=350))
             ], width=6)
         ], className="mb-4"),

@@ -4,41 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5e04179-d9e3-4bae-9c34-394848a5a6c6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/casp_dashboard.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/helpers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/sidebar.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/metrics_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/agile/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/agile/ai_adoption.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/agile/cycle_time.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/agile/sprint_burndown.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/agile/velocity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/dashboard.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/dora/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/dora/deployment_frequency.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/dora/failure_rate.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/dora/lead_time.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/dora/restore_time.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/space/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/space/activity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/space/communication.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/space/efficiency.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/space/performance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/layouts/space/satisfaction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app_original.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/original_big_file_works.py" afterDir="false" />
+    <list default="true" id="b5e04179-d9e3-4bae-9c34-394848a5a6c6" name="Changes" comment="initial commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layouts/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/layouts/dashboard.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,8 +163,17 @@
       <option name="presentableId" value="Default" />
       <updated>1744307683926</updated>
       <workItem from="1744646209127" duration="5886000" />
-      <workItem from="1744663108079" duration="13102000" />
+      <workItem from="1744663108079" duration="13832000" />
     </task>
+    <task id="LOCAL-00001" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1744679101823</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744679101823</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,6 +189,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -229,6 +210,6 @@
     <SUITE FILE_PATH="coverage/casp_dashboard$dashboard.coverage" NAME="dashboard Coverage Results" MODIFIED="1744673367719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/layouts" />
     <SUITE FILE_PATH="coverage/casp_dashboard$dash_metrics_dashboard.coverage" NAME="dash_metrics_dashboard Coverage Results" MODIFIED="1744646209249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Downloads/ai-metrics-dashboard (4)" />
     <SUITE FILE_PATH="coverage/casp_dashboard$app_original.coverage" NAME="app_original Coverage Results" MODIFIED="1744650779947" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/casp_dashboard$main.coverage" NAME="main Coverage Results" MODIFIED="1744679012127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casp_dashboard$main.coverage" NAME="main Coverage Results" MODIFIED="1744679725252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
