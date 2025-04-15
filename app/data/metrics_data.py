@@ -1,24 +1,43 @@
-import sqlite3
+# import sqlite3 # Remove sqlite3 import
 import pandas as pd
-import os
+# import os # Remove os import if only used for db_path
+from .db import get_db_engine # Import the engine creator
 
-# Unified function to fetch data from SQLite
-
+# Unified function to fetch data using SQLAlchemy engine
 def fetch_data_from_db(table_name):
-    # Absolute path to this file
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    try:
+        engine = get_db_engine() # Get the engine
+        # Use pandas read_sql_table for simplicity
+        # Assumes tables are in the default 'public' schema
+        with engine.connect() as connection:
+            df = pd.read_sql_table(table_name, connection)
+        return df
+    except FileNotFoundError:
+        # This error is unlikely now but kept for safety 
+        # (e.g., if .env file isn't found by dotenv)
+        print(f"Error: Configuration file (.env) not found.")
+        raise
+    except ValueError as e:
+        # Catch errors from get_db_engine (e.g., missing env vars)
+        print(f"Configuration Error: {e}")
+        raise # Re-raise the exception to signal failure
+    except Exception as e:
+        # Catch other potential errors (DB connection, table not found, etc.)
+        print(f"Error fetching data for table '{table_name}' from PostgreSQL: {e}")
+        # Depending on requirements, you might return an empty DataFrame
+        # return pd.DataFrame()
+        # Or re-raise the exception to make the calling code handle it
+        raise
 
-    # Path to the SQLite file within the same directory
-    db_path = os.path.join(base_dir, 'dashboard_metrics.db')
-
-    if not os.path.exists(db_path):
-        raise FileNotFoundError(f"Database not found at: {db_path}")
-
-    # Connect and fetch
-    conn = sqlite3.connect(db_path)
-    df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
-    conn.close()
-    return df
+    # Remove the old SQLite connection logic
+    # base_dir = os.path.dirname(os.path.abspath(__file__))
+    # db_path = os.path.join(base_dir, 'dashboard_metrics.db')
+    # if not os.path.exists(db_path):
+    #     raise FileNotFoundError(f"Database not found at: {db_path}")
+    # conn = sqlite3.connect(db_path)
+    # df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
+    # conn.close()
+    # return df
 
 # Data fetch functions
 def get_metrics_data():

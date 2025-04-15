@@ -1,6 +1,6 @@
-import sqlite3
-
+# import sqlite3
 import pandas as pd
+from .db import get_db_engine
 
 # === Overview Metrics ===
 metrics_data = pd.DataFrame({
@@ -113,38 +113,45 @@ ai_adoption_data = pd.DataFrame({
 
 # Optional: Save all tables as CSVs for inspection
 if __name__ == "__main__":
-    # Open a connection to a SQLite database file
-    conn = sqlite3.connect("dashboard_metrics.db")
+    try:
+        engine = get_db_engine()
+        print("Attempting to connect to PostgreSQL...")
+        with engine.connect() as connection_test:
+             print("✔ Successfully connected to PostgreSQL.")
 
-    # Dictionary of all your DataFrames
-    tables = {
-        "metrics_data": metrics_data,
-        "deployment_frequency_data": deployment_frequency_data,
-        "lead_time_data": lead_time_data,
-        "failure_rate_data": failure_rate_data,
-        "restore_time_data": restore_time_data,
-        "cycle_time_data": cycle_time_data,
-        "satisfaction_data": satisfaction_data,
-        "performance_data": performance_data,
-        "communication_data": communication_data,
-        "efficiency_data": efficiency_data,
-        "efficiency_trend_data": efficiency_trend_data,
-        "activity_data": activity_data,
-        "activity_trend_data": activity_trend_data,
-        "velocity_data": velocity_data,
-        "sprint_burndown_data": sprint_burndown_data,
-        "ai_adoption_by_team": ai_adoption_by_team,
-        "ai_adoption_data": ai_adoption_data,
-    }
+        tables = {
+            "metrics_data": metrics_data,
+            "deployment_frequency_data": deployment_frequency_data,
+            "lead_time_data": lead_time_data,
+            "failure_rate_data": failure_rate_data,
+            "restore_time_data": restore_time_data,
+            "cycle_time_data": cycle_time_data,
+            "satisfaction_data": satisfaction_data,
+            "performance_data": performance_data,
+            "communication_data": communication_data,
+            "efficiency_data": efficiency_data,
+            "efficiency_trend_data": efficiency_trend_data,
+            "activity_data": activity_data,
+            "activity_trend_data": activity_trend_data,
+            "velocity_data": velocity_data,
+            "sprint_burndown_data": sprint_burndown_data,
+            "ai_adoption_by_team": ai_adoption_by_team,
+            "ai_adoption_data": ai_adoption_data,
+        }
 
-    # Write each table to the database
-    for name, df in tables.items():
-        df.to_sql(name, conn, if_exists="replace", index=False)
-        print(f"✅ Saved to DB: {name}")
+        with engine.connect() as connection:
+            print("Writing tables to PostgreSQL...")
+            for name, df in tables.items():
+                try:
+                    df.to_sql(name, connection, if_exists="replace", index=False, method='multi')
+                    print(f"  ✔ Wrote table: {name}")
+                except Exception as e:
+                    print(f"  ❌ Failed to write table {name}: {e}")
 
-    conn.close()
-    print("🎉 All data written to ai_metrics.db")
-    # for name, df in tables.items():
-    #     df.to_csv(f"{name}.csv", index=False)
-    #     print(f"✅ Saved: {name}.csv")
+        print("🎉 Finished writing data to PostgreSQL.")
+
+    except ValueError as e:
+        print(f"❌ Configuration Error: {e}")
+    except Exception as e:
+        print(f"❌ An error occurred during database setup: {e}")
 
