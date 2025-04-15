@@ -1,6 +1,6 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
-from app.data.metrics_data import velocity_data
+from app.data.metrics_data import get_velocity_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
 
@@ -14,6 +14,6 @@ layout = html.Div([
     ]),
 
     dcc.Graph(
-        figure=px.bar(velocity_data, x='Sprint', y='Velocity', title="Sprint Velocity")
+        figure=px.bar(get_velocity_data(), x='Sprint', y='Velocity', title="Sprint Velocity")
     )
 ])

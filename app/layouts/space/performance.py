@@ -1,6 +1,6 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
-from app.data.metrics_data import performance_data
+from app.data.metrics_data import get_performance_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
 
@@ -15,6 +15,6 @@ layout = html.Div([
     ]),
 
     dcc.Graph(
-        figure=px.line(performance_data, x='Month', y=['Quality', 'Impact'], title="Performance Over Time")
+        figure=px.line(get_performance_data(), x='Month', y=['Quality', 'Impact'], title="Performance Over Time")
     )
 ])

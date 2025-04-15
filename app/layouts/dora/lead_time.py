@@ -1,7 +1,7 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
-from app.data.metrics_data import lead_time_data
+from app.data.metrics_data import get_lead_time_data
 from app.components.helpers import create_metric_card
 
 
@@ -15,6 +15,6 @@ layout = html.Div([
     ], className="mb-4"),
 
     dcc.Graph(
-        figure=px.line(lead_time_data, x='Month', y='Lead Time', title="Lead Time Over Time")
+        figure=px.line(get_lead_time_data(), x='Month', y='Lead Time', title="Lead Time Over Time")
     )
 ])

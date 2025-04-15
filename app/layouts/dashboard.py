@@ -5,20 +5,20 @@ import plotly.graph_objects as go
 
 from ..components.helpers import create_metric_card
 from ..data.metrics_data import (
-    metrics_data,
-    failure_rate_data,
-    restore_time_data,
-    satisfaction_data,
-    performance_data,
-    activity_data,
-    communication_data,
-    efficiency_data,
-    efficiency_trend_data,
-    velocity_data,
-    cycle_time_data,
-    sprint_burndown_data,
-    ai_adoption_by_team,
-    activity_trend_data
+    get_metrics_data,
+    get_failure_rate_data,
+    get_restore_time_data,
+    get_satisfaction_data,
+    get_performance_data,
+    get_activity_data,
+    get_communication_data,
+    get_efficiency_data,
+    get_efficiency_trend_data,
+    get_velocity_data,
+    get_cycle_time_data,
+    get_sprint_burndown_data,
+    get_ai_adoption_by_team,
+    get_activity_trend_data
 )
 
 dashboard_layout = html.Div([
@@ -61,7 +61,7 @@ def create_dashboard_overview():
         dbc.Row([
             dbc.Col([
                 html.H5("Metrics Overview", className="section-header"),
-                dcc.Graph(figure=px.line(metrics_data, x="month",
+                dcc.Graph(figure=px.line(get_metrics_data(), x="month",
                     y=["Deployment Frequency", "Lead Time", "Team Satisfaction", "AI Adoption"]).update_layout(
                     title="Metric Trends", height=400))
             ], width=8),
@@ -70,8 +70,8 @@ def create_dashboard_overview():
                 html.H5("Team Efficiency", className="section-header"),
                 html.P("AI-assisted vs traditional tasks"),
                 dcc.Graph(figure=go.Figure(data=[
-                    go.Bar(name='Traditional', x=efficiency_data['Task'], y=efficiency_data['Traditional']),
-                    go.Bar(name='AI-Assisted', x=efficiency_data['Task'], y=efficiency_data['AI-Assisted']),
+                    go.Bar(name='Traditional', x=get_efficiency_data()['Task'], y=get_efficiency_data()['Traditional']),
+                    go.Bar(name='AI-Assisted', x=get_efficiency_data()['Task'], y=get_efficiency_data()['AI-Assisted']),
                 ]).update_layout(title="Time on Tasks (Minutes)", barmode="group", height=400))
             ], width=4),
         ], className="mb-4"),
@@ -87,7 +87,7 @@ def create_dashboard_overview():
                         html.Small(activity["time"], className="text-muted")
                     ])
                 ])
-            ]) for activity in activity_data.to_dict("records")
+            ]) for activity in get_activity_data().to_dict("records")
         ])
     ])
 
@@ -98,7 +98,7 @@ def create_dashboard_dora():
                 html.H5("Deployment Frequency", className="section-header"),
                 dcc.Graph(
                     figure=px.bar(
-                        metrics_data,
+                        get_metrics_data(),
                         x='month',
                         y='Deployment Frequency',
                         title='Deployments Per Week'
@@ -110,7 +110,7 @@ def create_dashboard_dora():
                 html.H5("Lead Time for Changes", className="section-header"),
                 dcc.Graph(
                     figure=px.line(
-                        metrics_data,
+                        get_metrics_data(),
                         x='month',
                         y='Lead Time',
                         title='Lead Time (Days)'
@@ -124,7 +124,7 @@ def create_dashboard_dora():
                 html.H5("Change Failure Rate", className="section-header"),
                 dcc.Graph(
                     figure=px.bar(
-                        failure_rate_data,
+                        get_failure_rate_data(),
                         x='Month',
                         y='Failure Rate',
                         title='Failure Rate (%)'
@@ -136,7 +136,7 @@ def create_dashboard_dora():
                 html.H5("Time to Restore", className="section-header"),
                 dcc.Graph(
                     figure=px.line(
-                        restore_time_data,
+                        get_restore_time_data(),
                         x='Month',
                         y='Restore Time',
                         title='Time to Restore (Hours)'
@@ -152,7 +152,7 @@ def create_dashboard_space():
             dbc.Col([
                 html.H5("Satisfaction"),
                 dcc.Graph(figure=px.bar(
-                    satisfaction_data,
+                    get_satisfaction_data(),
                     x="Month", y="Score",
                     title="Satisfaction (%)"
                 ).update_layout(height=300))
@@ -161,7 +161,7 @@ def create_dashboard_space():
             dbc.Col([
                 html.H5("Performance"),
                 dcc.Graph(figure=px.line(
-                    performance_data,
+                    get_performance_data(),
                     x="Month", y="Quality",
                     title="Quality (%)"
                 ).update_layout(height=300))
@@ -170,7 +170,7 @@ def create_dashboard_space():
             dbc.Col([
                 html.H5("Activity"),
                 dcc.Graph(figure=px.bar(
-                    activity_trend_data,
+                    get_activity_trend_data(),
                     x="Month", y="Prompts",
                     title="AI Prompts"
                 ).update_layout(height=300))
@@ -181,7 +181,7 @@ def create_dashboard_space():
             dbc.Col([
                 html.H5("Communication"),
                 dcc.Graph(figure=px.line(
-                    communication_data,
+                    get_communication_data(),
                     x="Month", y="Collaboration",
                     title="Collaboration"
                 ).update_layout(height=300))
@@ -190,7 +190,7 @@ def create_dashboard_space():
             dbc.Col([
                 html.H5("Efficiency"),
                 dcc.Graph(figure=px.bar(
-                    efficiency_trend_data,
+                    get_efficiency_trend_data(),
                     x="Month", y="Time Saved",
                     title="Time Saved (Hours)"
                 ).update_layout(height=300))
@@ -203,12 +203,12 @@ def create_dashboard_agile():
         dbc.Row([
             dbc.Col([
                 html.H5("Velocity"),
-                dcc.Graph(figure=px.line(velocity_data, x="Sprint", y="Velocity",
+                dcc.Graph(figure=px.line(get_velocity_data(), x="Sprint", y="Velocity",
                     title="Velocity").update_layout(height=350))
             ], width=6),
             dbc.Col([
                 html.H5("Cycle Time"),
-                dcc.Graph(figure=px.bar(cycle_time_data, x="Month", y="Cycle Time",
+                dcc.Graph(figure=px.bar(get_cycle_time_data(), x="Month", y="Cycle Time",
                     title="Cycle Time (Days)").update_layout(height=350))
             ], width=6)
         ], className="mb-4"),
@@ -216,12 +216,12 @@ def create_dashboard_agile():
         dbc.Row([
             dbc.Col([
                 html.H5("Sprint Burndown"),
-                dcc.Graph(figure=px.line(sprint_burndown_data, x="Day", y="Remaining",
+                dcc.Graph(figure=px.line(get_sprint_burndown_data(), x="Day", y="Remaining",
                     title="Burndown").update_layout(height=350))
             ], width=6),
             dbc.Col([
                 html.H5("AI Adoption by Team"),
-                dcc.Graph(figure=px.bar(ai_adoption_by_team, x="Team", y="Adoption",
+                dcc.Graph(figure=px.bar(get_ai_adoption_by_team(), x="Team", y="Adoption",
                     title="AI Adoption (%)").update_layout(height=350))
             ], width=6)
         ])

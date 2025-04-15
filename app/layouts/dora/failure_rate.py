@@ -1,7 +1,7 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
-from app.data.metrics_data import failure_rate_data
+from app.data.metrics_data import get_failure_rate_data
 from app.components.helpers import create_metric_card
 
 
@@ -16,6 +16,6 @@ layout = html.Div([
     ], className="mb-4"),
 
     dcc.Graph(
-        figure=px.bar(failure_rate_data, x='Month', y='Failure Rate', title="Failure Rate by Month")
+        figure=px.bar(get_failure_rate_data(), x='Month', y='Failure Rate', title="Failure Rate by Month")
     )
 ])

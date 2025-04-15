@@ -1,6 +1,6 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
-from app.data.metrics_data import efficiency_trend_data
+from app.data.metrics_data import get_efficiency_trend_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
 
@@ -15,7 +15,7 @@ layout = html.Div([
 
     dcc.Graph(
         figure=px.line(
-            efficiency_trend_data,
+            get_efficiency_trend_data(),
             x='Month',
             y=['Time Saved', 'Productive Hours'],
             title="Efficiency Over Time"

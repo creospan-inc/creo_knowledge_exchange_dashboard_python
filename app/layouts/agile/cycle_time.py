@@ -1,6 +1,6 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
-from app.data.metrics_data import cycle_time_data
+from app.data.metrics_data import get_cycle_time_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
 
@@ -14,6 +14,6 @@ layout = html.Div([
     ]),
 
     dcc.Graph(
-        figure=px.line(cycle_time_data, x='Month', y='Cycle Time', title="Cycle Time Trend")
+        figure=px.line(get_cycle_time_data(), x='Month', y='Cycle Time', title="Cycle Time Trend")
     )
 ])

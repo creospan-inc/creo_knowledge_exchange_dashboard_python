@@ -2,7 +2,7 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from app.components.helpers import create_metric_card
-from app.data.metrics_data import activity_trend_data
+from app.data.metrics_data import get_activity_trend_data
 
 layout = html.Div([
     html.H1("Activity", className="main-header mb-2"),
@@ -14,6 +14,6 @@ layout = html.Div([
     ]),
 
     dcc.Graph(
-        figure=px.line(activity_trend_data, x='Month', y=['Prompts', 'Commits'], title="Developer Activity Trends")
+        figure=px.line(get_activity_trend_data(), x='Month', y=['Prompts', 'Commits'], title="Developer Activity Trends")
     )
 ])

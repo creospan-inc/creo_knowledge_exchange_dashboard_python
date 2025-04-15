@@ -1,7 +1,7 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
-from app.data.metrics_data import deployment_frequency_data
+from app.data.metrics_data import get_deployment_frequency_data
 from app.components.helpers import create_metric_card
 
 
@@ -15,6 +15,6 @@ layout = html.Div([
     ], className="mb-4"),
 
     dcc.Graph(
-        figure=px.bar(deployment_frequency_data, x='Month', y='Frequency', title="Deployments per Month")
+        figure=px.bar(get_deployment_frequency_data(), x='Month', y='Frequency', title="Deployments per Month")
     )
 ])

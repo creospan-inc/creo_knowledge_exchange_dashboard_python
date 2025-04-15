@@ -1,6 +1,6 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
-from app.data.metrics_data import ai_adoption_data
+from app.data.metrics_data import get_ai_adoption_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
 
@@ -14,6 +14,6 @@ layout = html.Div([
     ]),
 
     dcc.Graph(
-        figure=px.line(ai_adoption_data, x='Month', y='Adoption Rate', title="AI Adoption Over Time")
+        figure=px.line(get_ai_adoption_data(), x='Month', y='Adoption Rate', title="AI Adoption Over Time")
     )
 ])

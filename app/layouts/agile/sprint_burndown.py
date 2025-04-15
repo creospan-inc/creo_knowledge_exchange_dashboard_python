@@ -1,6 +1,6 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
-from app.data.metrics_data import sprint_burndown_data
+from app.data.metrics_data import get_sprint_burndown_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
 
@@ -14,6 +14,6 @@ layout = html.Div([
     ]),
 
     dcc.Graph(
-        figure=px.line(sprint_burndown_data, x='Day', y='Remaining', title="Sprint Burndown Chart")
+        figure=px.line(get_sprint_burndown_data(), x='Day', y='Remaining', title="Sprint Burndown Chart")
     )
 ])
