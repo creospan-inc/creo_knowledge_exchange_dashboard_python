@@ -111,6 +111,23 @@ ai_adoption_data = pd.DataFrame({
     'Adoption Rate': [40, 55, 68]
 })
 
+# === AI Time Saving by Role Metrics ===
+time_saving_by_role = pd.DataFrame({
+    'Role': ['Product Manager', 'Designer', 'Engineer', 'QA'],
+    'Hours Saved': [15.3, 12.8, 20.5, 18.2],
+    'Percent Time Saved': [22, 18, 28, 25],
+    'Traditional Hours': [68, 72, 75, 70],
+    'AI-Assisted Hours': [53, 59, 54, 52]
+})
+
+time_saving_by_role_trend = pd.DataFrame({
+    'Month': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    'Product Manager': [8.2, 10.5, 12.8, 14.1, 15.3, 16.7],
+    'Designer': [6.5, 8.2, 9.4, 10.6, 12.8, 14.0],
+    'Engineer': [12.4, 14.8, 16.5, 18.2, 20.5, 22.3],
+    'QA': [10.2, 12.5, 14.7, 16.4, 18.2, 19.8]
+})
+
 # Optional: Save all tables as CSVs for inspection
 if __name__ == "__main__":
     # Open a connection to a SQLite database file
@@ -135,6 +152,8 @@ if __name__ == "__main__":
         "sprint_burndown_data": sprint_burndown_data,
         "ai_adoption_by_team": ai_adoption_by_team,
         "ai_adoption_data": ai_adoption_data,
+        "time_saving_by_role": time_saving_by_role,
+        "time_saving_by_role_trend": time_saving_by_role_trend,
     }
 
     # Write each table to the database

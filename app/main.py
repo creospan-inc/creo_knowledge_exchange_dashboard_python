@@ -1,14 +1,31 @@
-from dash import Dash
+import os
+import sys
+from pathlib import Path
+
+import dash
 import dash_bootstrap_components as dbc
 
-app = Dash(
+# Make sure the project root directory is in the Python path
+current_file = Path(__file__).resolve()
+project_root = current_file.parent.parent  # Go up one level from app/
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+# Now the imports will work properly when run directly
+from app.app_routes import layout, register_callbacks
+
+# Initialize the Dash app with Bootstrap
+app = dash.Dash(
     __name__,
     external_stylesheets=[dbc.themes.BOOTSTRAP],
-    suppress_callback_exceptions=True,
-    meta_tags=[{'name': 'viewport', 'content': 'width=device-width, initial-scale=1'}]
+    suppress_callback_exceptions=True,  # For dynamic layouts
+    meta_tags=[
+        {"name": "viewport", "content": "width=device-width, initial-scale=1"},
+    ],
+    title="AI Metrics Dashboard"
 )
 
-# 👇 Add this block right here:
+# Custom HTML template for the app
 app.index_string = '''
 <!DOCTYPE html>
 <html>
@@ -30,10 +47,21 @@ app.index_string = '''
 </html>
 '''
 
-# 🔁 Then continue as normal:
-from .app_routes import layout, register_callbacks
+# Main layout
 app.layout = layout
+
+# Register callbacks
 register_callbacks(app)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Initialize the server
+server = app.server
+
+def main():
+    """Entry point for the application"""
+    print("Starting AI Metrics Dashboard...")
+    print("Access the dashboard at http://127.0.0.1:8050/")
+    app.run(debug=True, port=8050)
+    
+# Run the app
+if __name__ == "__main__":
+    main()

@@ -72,6 +72,12 @@ def get_ai_adoption_by_team():
 def get_ai_adoption_data():
     return fetch_data_from_db("ai_adoption_data")
 
+def get_time_saving_by_role():
+    return fetch_data_from_db("time_saving_by_role")
+
+def get_time_saving_by_role_trend():
+    return fetch_data_from_db("time_saving_by_role_trend")
+
 
 
 

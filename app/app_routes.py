@@ -24,6 +24,9 @@ from .layouts.agile.cycle_time import layout as agile_cycle_time_layout
 from .layouts.agile.sprint_burndown import layout as agile_sprint_burndown_layout
 from .layouts.agile.ai_adoption import layout as agile_ai_adoption_layout
 
+# AI Metrics
+from .layouts.ai.time_saving_by_role import layout as ai_time_saving_by_role_layout
+
 # Settings
 from .layouts.settings import layout as settings_layout
 
@@ -66,6 +69,10 @@ def register_callbacks(app):
         # Dashboard
         if pathname in ['/', '']:
             content.append(dashboard_layout)
+
+        # AI Metrics
+        elif pathname == '/ai/time-saving-by-role':
+            content.append(ai_time_saving_by_role_layout)
 
         # DORA Metrics
         elif pathname == '/dora/deployment-frequency':

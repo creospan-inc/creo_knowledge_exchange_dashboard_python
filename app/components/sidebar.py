@@ -24,6 +24,15 @@ sidebar = html.Div(
             pills=True,
         ),
 
+        html.H6("AI Metrics", className="nav-header"),
+        dbc.Nav(
+            [
+                dbc.NavLink("Time Saving by Role", href="/ai/time-saving-by-role", id="time-saving-by-role-link", active="exact"),
+            ],
+            vertical=True,
+            pills=True,
+        ),
+
         html.H6("DORA Metrics", className="nav-header"),
         dbc.Nav(
             [
