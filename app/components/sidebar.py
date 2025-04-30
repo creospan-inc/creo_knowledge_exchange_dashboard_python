@@ -4,8 +4,7 @@ import dash_bootstrap_components as dbc
 sidebar = html.Div(
     [
         html.Div([
-            html.Img(src="https://via.placeholder.com/40x40.png?text=⚡", width=40),
-            html.H4("AI Metrics", className="d-inline-block ms-2 mb-4"),
+            html.H4("📊  AI Metrics", className="d-inline-block ms-2 mb-4"),
         ], className="d-flex align-items-center"),
 
         # html.Button(
@@ -28,6 +27,7 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Time Saving by Role", href="/ai/time-saving-by-role", id="time-saving-by-role-link", active="exact"),
+                dbc.NavLink("AI Adoption", href="/agile/ai-adoption", id="ai-adoption-link", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -64,7 +64,6 @@ sidebar = html.Div(
                 dbc.NavLink("Velocity", href="/agile/velocity", id="velocity-link", active="exact"),
                 dbc.NavLink("Cycle Time", href="/agile/cycle-time", id="cycle-time-link", active="exact"),
                 dbc.NavLink("Sprint Burndown", href="/agile/sprint-burndown", id="sprint-burndown-link", active="exact"),
-                dbc.NavLink("AI Adoption", href="/agile/ai-adoption", id="ai-adoption-link", active="exact"),
             ],
             vertical=True,
             pills=True,
