@@ -52,7 +52,7 @@ layout = html.Div([
 
 # 🔁 Register routing and theming callbacks
 def register_callbacks(app):
-    # Page rendering and theme class application
+    # Page routing and theme toggle
     @app.callback(
         Output('page-content', 'children'),
         Output('main-container', 'className'),
@@ -60,21 +60,15 @@ def register_callbacks(app):
         Input('theme-store', 'data')
     )
     def display_page(pathname, theme_data):
-        print(f"DISPLAY_PAGE - Path: {pathname}, Theme data: {theme_data}")
         theme_class = 'dark-theme' if theme_data and theme_data.get('theme') == 'dark' else 'light-theme'
-        print(f"DISPLAY_PAGE - Applying class: '{theme_class}'")
-
         content = [sidebar]
 
-        # Dashboard
         if pathname in ['/', '']:
             content.append(dashboard_layout)
 
-        # AI Metrics
         elif pathname == '/ai/time-saving-by-role':
             content.append(ai_time_saving_by_role_layout)
 
-        # DORA Metrics
         elif pathname == '/dora/deployment-frequency':
             content.append(dora_deployment_frequency_layout)
         elif pathname == '/dora/lead-time':
@@ -84,7 +78,6 @@ def register_callbacks(app):
         elif pathname == '/dora/time-to-restore':
             content.append(dora_time_to_restore_layout)
 
-        # SPACE Metrics
         elif pathname == '/space/satisfaction':
             content.append(space_satisfaction_layout)
         elif pathname == '/space/performance':
@@ -96,7 +89,6 @@ def register_callbacks(app):
         elif pathname == '/space/efficiency':
             content.append(space_efficiency_layout)
 
-        # Agile Metrics
         elif pathname == '/agile/velocity':
             content.append(agile_velocity_layout)
         elif pathname == '/agile/cycle-time':
@@ -106,11 +98,9 @@ def register_callbacks(app):
         elif pathname == '/agile/ai-adoption':
             content.append(agile_ai_adoption_layout)
 
-        # Settings
         elif pathname == '/settings':
             content.append(settings_layout)
 
-        # Fallback for unknown routes
         else:
             content.append(html.Div([
                 html.H1("Page Not Found", className="main-header"),
@@ -120,7 +110,6 @@ def register_callbacks(app):
 
         return content, theme_class
 
-    # Theme toggle handler with protection from phantom triggers
     @app.callback(
         Output('theme-store', 'data'),
         Input('theme-toggle', 'n_clicks'),
@@ -128,23 +117,48 @@ def register_callbacks(app):
         prevent_initial_call=True
     )
     def toggle_theme(n_clicks, current_theme_data):
-        print(f"TOGGLE_THEME - Clicked: {n_clicks}, Current data: {current_theme_data}")
-
         if n_clicks is None:
             raise dash.exceptions.PreventUpdate
 
         current_theme = current_theme_data.get('theme', 'light') if current_theme_data else 'light'
         new_theme = 'dark' if current_theme == 'light' else 'light'
-        print(f"TOGGLE_THEME - New theme: {new_theme}")
         return {'theme': new_theme}
 
-    # Keep the icon in sync with current theme state
     @app.callback(
         Output('theme-toggle', 'children'),
         Input('theme-store', 'data'),
         prevent_initial_call=True
     )
     def update_toggle_icon(theme_data):
-        if theme_data.get('theme') == 'dark':
-            return '☀️'
-        return '🌙'
+        return '☀️' if theme_data.get('theme') == 'dark' else '🌙'
+
+    # --- NEW: Collapsible Sidebar Section Callbacks ---
+    @app.callback(Output("collapse-nav", "is_open"),
+                  Input("toggle-nav", "n_clicks"),
+                  State("collapse-nav", "is_open"))
+    def toggle_nav(n, is_open):
+        return not is_open if n else is_open
+
+    @app.callback(Output("collapse-ai", "is_open"),
+                  Input("toggle-ai", "n_clicks"),
+                  State("collapse-ai", "is_open"))
+    def toggle_ai(n, is_open):
+        return not is_open if n else is_open
+
+    @app.callback(Output("collapse-dora", "is_open"),
+                  Input("toggle-dora", "n_clicks"),
+                  State("collapse-dora", "is_open"))
+    def toggle_dora(n, is_open):
+        return not is_open if n else is_open
+
+    @app.callback(Output("collapse-space", "is_open"),
+                  Input("toggle-space", "n_clicks"),
+                  State("collapse-space", "is_open"))
+    def toggle_space(n, is_open):
+        return not is_open if n else is_open
+
+    @app.callback(Output("collapse-agile", "is_open"),
+                  Input("toggle-agile", "n_clicks"),
+                  State("collapse-agile", "is_open"))
+    def toggle_agile(n, is_open):
+        return not is_open if n else is_open
