@@ -4,7 +4,6 @@ from pathlib import Path
 
 import dash
 import dash_bootstrap_components as dbc
-
 # Make sure the project root directory is in the Python path
 current_file = Path(__file__).resolve()
 project_root = current_file.parent.parent  # Go up one level from app/
