@@ -1,12 +1,13 @@
 from dash import html, dcc
 from dash.dependencies import Input, Output, State
 import dash.exceptions
+import plotly.express as px
 
 from .components.sidebar import sidebar
 from .layouts.dashboard import dashboard_layout
 
 # DORA Metrics
-from .layouts.dora.deployment_frequency import layout as dora_deployment_frequency_layout
+from .layouts.dora import deployment_frequency
 from .layouts.dora.lead_time import layout as dora_lead_time_layout
 from .layouts.dora.failure_rate import layout as dora_change_failure_rate_layout
 from .layouts.dora.restore_time import layout as dora_time_to_restore_layout
@@ -70,7 +71,7 @@ def register_callbacks(app):
             content.append(ai_time_saving_by_role_layout)
 
         elif pathname == '/dora/deployment-frequency':
-            content.append(dora_deployment_frequency_layout)
+            content.append(deployment_frequency.layout)
         elif pathname == '/dora/lead-time':
             content.append(dora_lead_time_layout)
         elif pathname == '/dora/change-failure-rate':
@@ -162,3 +163,30 @@ def register_callbacks(app):
                   State("collapse-agile", "is_open"))
     def toggle_agile(n, is_open):
         return not is_open if n else is_open
+
+    @app.callback(
+        Output('deployment-frequency-graph', 'figure'),
+        Input('team-selector', 'value')
+    )
+    def update_deployment_graph(selected_teams):
+        print("CALLBACK TRIGGERED", selected_teams)
+        df = deployment_frequency.get_deployment_frequency_data()
+        print("DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty:
+            print("⚠️ No data returned from get_deployment_frequency_data()")
+            return px.bar(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.bar(title="No Data for Selected Teams")
+        return px.bar(
+            filtered_df,
+            x='Month',
+            y='Frequency',
+            color='team_id',
+            barmode='group',
+            title="Deployment Frequency by Team"
+        )
