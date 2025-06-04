@@ -4,6 +4,13 @@ from app.data.metrics_data import get_efficiency_trend_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
 
+# Load data for dropdown
+
+df = get_efficiency_trend_data()
+print("Efficiency DataFrame loaded in layout:", df.head())
+team_ids = sorted(df['team_id'].dropna().unique()) if not df.empty and 'team_id' in df.columns else []
+print("Team IDs for dropdown:", team_ids)
+
 layout = html.Div([
     html.H1("Efficiency", className="main-header mb-2"),
     html.P("Time saved and overhead reduction from AI", className="text-muted mb-4"),
@@ -13,12 +20,13 @@ layout = html.Div([
         dbc.Col(create_metric_card("Productive Hours", "34 hrs", "+9%", "💡"), width=4),
     ]),
 
-    dcc.Graph(
-        figure=px.line(
-            get_efficiency_trend_data(),
-            x='Month',
-            y=['Time Saved', 'Productive Hours'],
-            title="Efficiency Over Time"
-        ).update_layout(height=400)
-    )
+    dcc.Dropdown(
+        id='efficiency-team-selector',
+        options=[{'label': team, 'value': team} for team in team_ids],
+        value=team_ids,
+        multi=True,
+        placeholder="Select teams to display"
+    ),
+
+    dcc.Graph(id='efficiency-graph')
 ])

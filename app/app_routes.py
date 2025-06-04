@@ -34,7 +34,7 @@ from .layouts.settings import layout as settings_layout
 # Ensure callbacks in dashboard.py are registered
 from .layouts import dashboard
 
-from app.data.metrics_data import get_failure_rate_data, get_lead_time_data, get_restore_time_data, get_velocity_data, get_cycle_time_data, get_sprint_burndown_data
+from app.data.metrics_data import get_failure_rate_data, get_lead_time_data, get_restore_time_data, get_velocity_data, get_cycle_time_data, get_sprint_burndown_data, get_activity_trend_data, get_efficiency_trend_data
 
 # 🌐 Main layout structure
 layout = html.Div([
@@ -349,4 +349,58 @@ def register_callbacks(app):
             y='Remaining',
             color='team_id',
             title="Sprint Burndown by Team"
+        )
+
+    @app.callback(
+        Output('activity-graph', 'figure'),
+        Input('activity-team-selector', 'value')
+    )
+    def update_activity_graph(selected_teams):
+        print("ACTIVITY CALLBACK TRIGGERED", selected_teams)
+        df = get_activity_trend_data()
+        print("Activity DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty or 'team_id' not in df.columns:
+            print("⚠️ No data returned from get_activity_trend_data() or missing 'team_id'")
+            return px.line(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y=['Prompts', 'Commits'],
+            color='team_id',
+            title="Developer Activity Trends by Team"
+        )
+
+    @app.callback(
+        Output('efficiency-graph', 'figure'),
+        Input('efficiency-team-selector', 'value')
+    )
+    def update_efficiency_graph(selected_teams):
+        print("EFFICIENCY CALLBACK TRIGGERED", selected_teams)
+        df = get_efficiency_trend_data()
+        print("Efficiency DataFrame preview:\n", df.head())
+        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        print("Selected teams:", selected_teams)
+        if df.empty or 'team_id' not in df.columns:
+            print("⚠️ No data returned from get_efficiency_trend_data() or missing 'team_id'")
+            return px.line(title="No Data Available")
+        df['team_id'] = df['team_id'].astype(str).str.strip()
+        selected_teams = [str(t).strip() for t in selected_teams]
+        filtered_df = df[df['team_id'].isin(selected_teams)]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y=['Time Saved', 'Productive Hours'],
+            color='team_id',
+            title="Efficiency Over Time by Team"
         )
