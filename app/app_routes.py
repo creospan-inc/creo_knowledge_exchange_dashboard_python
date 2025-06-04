@@ -34,7 +34,7 @@ from .layouts.settings import layout as settings_layout
 # Ensure callbacks in dashboard.py are registered
 from .layouts import dashboard
 
-from app.data.metrics_data import get_failure_rate_data, get_lead_time_data, get_restore_time_data, get_velocity_data, get_cycle_time_data, get_sprint_burndown_data, get_activity_trend_data, get_efficiency_trend_data
+from app.data.metrics_data import get_failure_rate_data, get_lead_time_data, get_restore_time_data, get_velocity_data, get_cycle_time_data, get_sprint_burndown_data, get_activity_trend_data, get_efficiency_trend_data, get_satisfaction_data, get_performance_data, get_communication_data
 
 # 🌐 Main layout structure
 layout = html.Div([
@@ -403,4 +403,88 @@ def register_callbacks(app):
             y=['Time Saved', 'Productive Hours'],
             color='team_id',
             title="Efficiency Over Time by Team"
+        )
+
+    @app.callback(
+        Output('satisfaction-graph', 'figure'),
+        Input('satisfaction-team-selector', 'value')
+    )
+    def update_satisfaction_graph(selected_teams):
+        print("SATISFACTION CALLBACK TRIGGERED", selected_teams)
+        df = get_satisfaction_data()
+        print("Satisfaction DataFrame preview:\n", df.head())
+        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        print("Selected teams:", selected_teams)
+        if df.empty or 'team_id' not in df.columns:
+            print("⚠️ No data returned from get_satisfaction_data() or missing 'team_id'")
+            return px.line(title="No Data Available")
+        df['team_id'] = df['team_id'].astype(str).str.strip()
+        selected_teams = [str(t).strip() for t in selected_teams]
+        filtered_df = df[df['team_id'].isin(selected_teams)]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y='Score',
+            color='team_id',
+            title="Satisfaction Over Time by Team"
+        )
+
+    @app.callback(
+        Output('performance-graph', 'figure'),
+        Input('performance-team-selector', 'value')
+    )
+    def update_performance_graph(selected_teams):
+        print("PERFORMANCE CALLBACK TRIGGERED", selected_teams)
+        df = get_performance_data()
+        print("Performance DataFrame preview:\n", df.head())
+        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        print("Selected teams:", selected_teams)
+        if df.empty or 'team_id' not in df.columns:
+            print("⚠️ No data returned from get_performance_data() or missing 'team_id'")
+            return px.line(title="No Data Available")
+        df['team_id'] = df['team_id'].astype(str).str.strip()
+        selected_teams = [str(t).strip() for t in selected_teams]
+        filtered_df = df[df['team_id'].isin(selected_teams)]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y=['Quality', 'Impact'],
+            color='team_id',
+            title="Performance Over Time by Team"
+        )
+
+    @app.callback(
+        Output('communication-graph', 'figure'),
+        Input('communication-team-selector', 'value')
+    )
+    def update_communication_graph(selected_teams):
+        print("COMMUNICATION CALLBACK TRIGGERED", selected_teams)
+        df = get_communication_data()
+        print("Communication DataFrame preview:\n", df.head())
+        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        print("Selected teams:", selected_teams)
+        if df.empty or 'team_id' not in df.columns:
+            print("⚠️ No data returned from get_communication_data() or missing 'team_id'")
+            return px.line(title="No Data Available")
+        df['team_id'] = df['team_id'].astype(str).str.strip()
+        selected_teams = [str(t).strip() for t in selected_teams]
+        filtered_df = df[df['team_id'].isin(selected_teams)]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y='Collaboration',
+            color='team_id',
+            title="Collaboration Over Time by Team"
         )
