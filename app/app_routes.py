@@ -34,6 +34,8 @@ from .layouts.settings import layout as settings_layout
 # Ensure callbacks in dashboard.py are registered
 from .layouts import dashboard
 
+from app.data.metrics_data import get_failure_rate_data, get_lead_time_data, get_restore_time_data, get_velocity_data, get_cycle_time_data, get_sprint_burndown_data
+
 # 🌐 Main layout structure
 layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -189,4 +191,162 @@ def register_callbacks(app):
             color='team_id',
             barmode='group',
             title="Deployment Frequency by Team"
+        )
+
+    @app.callback(
+        Output('failure-rate-graph', 'figure'),
+        Input('failure-rate-team-selector', 'value')
+    )
+    def update_failure_rate_graph(selected_teams):
+        print("FAILURE RATE CALLBACK TRIGGERED", selected_teams)
+        df = get_failure_rate_data()
+        print("Failure Rate DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty:
+            print("⚠️ No data returned from get_failure_rate_data()")
+            return px.bar(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.bar(title="No Data for Selected Teams")
+        return px.bar(
+            filtered_df,
+            x='Month',
+            y='Failure Rate',
+            color='team_id',
+            barmode='group',
+            title="Failure Rate by Team"
+        )
+
+    @app.callback(
+        Output('lead-time-graph', 'figure'),
+        Input('lead-time-team-selector', 'value')
+    )
+    def update_lead_time_graph(selected_teams):
+        print("LEAD TIME CALLBACK TRIGGERED", selected_teams)
+        df = get_lead_time_data()
+        print("Lead Time DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty:
+            print("⚠️ No data returned from get_lead_time_data()")
+            return px.line(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y='Lead Time',
+            color='team_id',
+            title="Lead Time by Team"
+        )
+
+    @app.callback(
+        Output('restore-time-graph', 'figure'),
+        Input('restore-time-team-selector', 'value')
+    )
+    def update_restore_time_graph(selected_teams):
+        print("RESTORE TIME CALLBACK TRIGGERED", selected_teams)
+        df = get_restore_time_data()
+        print("Restore Time DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty:
+            print("⚠️ No data returned from get_restore_time_data()")
+            return px.line(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y='Restore Time',
+            color='team_id',
+            title="Time to Restore Service by Team"
+        )
+
+    @app.callback(
+        Output('velocity-graph', 'figure'),
+        Input('velocity-team-selector', 'value')
+    )
+    def update_velocity_graph(selected_teams):
+        print("VELOCITY CALLBACK TRIGGERED", selected_teams)
+        df = get_velocity_data()
+        print("Velocity DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty:
+            print("⚠️ No data returned from get_velocity_data()")
+            return px.bar(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.bar(title="No Data for Selected Teams")
+        return px.bar(
+            filtered_df,
+            x='Sprint',
+            y='Velocity',
+            color='team_id',
+            barmode='group',
+            title="Sprint Velocity by Team"
+        )
+
+    @app.callback(
+        Output('cycle-time-graph', 'figure'),
+        Input('cycle-time-team-selector', 'value')
+    )
+    def update_cycle_time_graph(selected_teams):
+        print("CYCLE TIME CALLBACK TRIGGERED", selected_teams)
+        df = get_cycle_time_data()
+        print("Cycle Time DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty:
+            print("⚠️ No data returned from get_cycle_time_data()")
+            return px.line(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Month',
+            y='Cycle Time',
+            color='team_id',
+            title="Cycle Time Trend by Team"
+        )
+
+    @app.callback(
+        Output('sprint-burndown-graph', 'figure'),
+        Input('sprint-burndown-team-selector', 'value')
+    )
+    def update_sprint_burndown_graph(selected_teams):
+        print("SPRINT BURNDOWN CALLBACK TRIGGERED", selected_teams)
+        df = get_sprint_burndown_data()
+        print("Sprint Burndown DataFrame preview:\n", df.head())
+        print("Columns:", df.columns)
+        print("Selected teams:", selected_teams)
+        if df.empty:
+            print("⚠️ No data returned from get_sprint_burndown_data()")
+            return px.line(title="No Data Available")
+        filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.line(
+            filtered_df,
+            x='Day',
+            y='Remaining',
+            color='team_id',
+            title="Sprint Burndown by Team"
         )

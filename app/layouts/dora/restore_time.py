@@ -1,8 +1,11 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
-import plotly.express as px
 from app.components.helpers import create_metric_card
 from app.data.metrics_data import get_restore_time_data
+
+# Load data once to populate dropdown safely
+df = get_restore_time_data()
+team_ids = sorted(df['team_id'].dropna().unique()) if not df.empty else []
 
 layout = html.Div([
     html.H1("Time to Restore Service", className="main-header mb-2"),
@@ -13,7 +16,14 @@ layout = html.Div([
         dbc.Col(create_metric_card("Goal", "< 1 hour", "Target", "🎯"), width=4),
     ], className="mb-4"),
 
-    dcc.Graph(
-        figure=px.line(get_restore_time_data(), x='Month', y='Restore Time', title="Time to Restore Service")
-    )
+    # Dropdown to select teams
+    dcc.Dropdown(
+        id='restore-time-team-selector',
+        options=[{'label': team, 'value': team} for team in team_ids],
+        value=team_ids,
+        multi=True,
+        placeholder="Select teams to display"
+    ),
+
+    dcc.Graph(id='restore-time-graph')
 ])
