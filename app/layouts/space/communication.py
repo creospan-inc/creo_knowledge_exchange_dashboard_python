@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 from app.data.metrics_data import get_communication_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
+from app.components.team_selector import team_selector_dropdown
 
 # Load data for dropdown
 df = get_communication_data()
@@ -18,13 +19,7 @@ layout = html.Div([
         dbc.Col(create_metric_card("Collaboration", "80", "+5", "🤝"), width=4),
     ]),
 
-    dcc.Dropdown(
-        id='communication-team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+    team_selector_dropdown('communication-team-selector', team_ids),
 
     dcc.Graph(id='communication-graph')
 ])

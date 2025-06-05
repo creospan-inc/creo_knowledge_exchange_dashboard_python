@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 from app.data.metrics_data import get_cycle_time_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
+from app.components.team_selector import team_selector_dropdown
 
 # Load data once to populate dropdown safely
 df = get_cycle_time_data()
@@ -17,13 +18,7 @@ layout = html.Div([
     ]),
 
     # Dropdown to select teams
-    dcc.Dropdown(
-        id='cycle-time-team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+    team_selector_dropdown('cycle-time-team-selector', team_ids),
 
     dcc.Graph(id='cycle-time-graph')
 ])

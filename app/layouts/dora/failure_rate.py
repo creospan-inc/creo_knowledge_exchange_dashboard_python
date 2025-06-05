@@ -2,6 +2,7 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 from app.data.metrics_data import get_failure_rate_data
 from app.components.helpers import create_metric_card
+from app.components.team_selector import team_selector_dropdown
 
 # Load data once to populate dropdown safely
 # Assumes your failure_rate_data table has a 'team_id' column
@@ -19,13 +20,7 @@ layout = html.Div([
     ], className="mb-4"),
 
     # Dropdown to select teams
-    dcc.Dropdown(
-        id='failure-rate-team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+    team_selector_dropdown('failure-rate-team-selector', team_ids),
 
     dcc.Graph(id='failure-rate-graph')
 ])

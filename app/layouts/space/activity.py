@@ -4,6 +4,7 @@ import plotly.express as px
 from app.components.helpers import create_metric_card
 from app.data.metrics_data import get_activity_trend_data
 import pandas as pd
+from app.components.team_selector import team_selector_dropdown
 
 # Load data for dropdown
 df = get_activity_trend_data()
@@ -20,13 +21,7 @@ layout = html.Div([
         dbc.Col(create_metric_card("Commits", "200", "+5%", "💾"), width=4),
     ]),
 
-    dcc.Dropdown(
-        id='activity-team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+    team_selector_dropdown('activity-team-selector', team_ids),
 
     dcc.Graph(id='activity-graph')
 ])

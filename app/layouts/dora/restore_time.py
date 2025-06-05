@@ -2,6 +2,7 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 from app.components.helpers import create_metric_card
 from app.data.metrics_data import get_restore_time_data
+from app.components.team_selector import team_selector_dropdown
 
 # Load data once to populate dropdown safely
 df = get_restore_time_data()
@@ -17,13 +18,7 @@ layout = html.Div([
     ], className="mb-4"),
 
     # Dropdown to select teams
-    dcc.Dropdown(
-        id='restore-time-team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+    team_selector_dropdown('restore-time-team-selector', team_ids),
 
     dcc.Graph(id='restore-time-graph')
 ])

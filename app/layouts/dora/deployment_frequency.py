@@ -6,7 +6,7 @@ import plotly.express as px
 from app import app
 from app.data.metrics_data import get_deployment_frequency_data
 from app.components.helpers import create_metric_card
-
+from app.components.team_selector import team_selector_dropdown
 # This file's callback only registers if the whole module is imported
 # Make sure app_routes.py or main.py has: import app.layouts.dora.deployment_frequency
 
@@ -27,13 +27,7 @@ layout = html.Div([
     ], className="mb-4"),
 
     # Dropdown to select teams
-    dcc.Dropdown(
-        id='team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+       team_selector_dropdown('team-selector', team_ids),
 
     dcc.Graph(id='deployment-frequency-graph')
 ])

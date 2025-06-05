@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 from app.data.metrics_data import get_velocity_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
+from app.components.team_selector import team_selector_dropdown
 
 # Load data once to populate dropdown safely
 df = get_velocity_data()
@@ -16,14 +17,8 @@ layout = html.Div([
         dbc.Col(create_metric_card("Current Velocity", "36 pts", "+12%", "🚀"), width=4),
     ]),
 
-    # Dropdown to select teams
-    dcc.Dropdown(
-        id='velocity-team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+    
+     team_selector_dropdown('velocity-team-selector', team_ids),
 
     dcc.Graph(id='velocity-graph')
 ])

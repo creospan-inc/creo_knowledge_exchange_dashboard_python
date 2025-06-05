@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 from app.data.metrics_data import get_efficiency_trend_data
 import plotly.express as px
 from app.components.helpers import create_metric_card
+from app.components.team_selector import team_selector_dropdown
 
 # Load data for dropdown
 
@@ -20,13 +21,7 @@ layout = html.Div([
         dbc.Col(create_metric_card("Productive Hours", "34 hrs", "+9%", "💡"), width=4),
     ]),
 
-    dcc.Dropdown(
-        id='efficiency-team-selector',
-        options=[{'label': team, 'value': team} for team in team_ids],
-        value=team_ids,
-        multi=True,
-        placeholder="Select teams to display"
-    ),
+    team_selector_dropdown('efficiency-team-selector', team_ids),
 
     dcc.Graph(id='efficiency-graph')
 ])
