@@ -17,7 +17,7 @@ from ..data.metrics_data import (
     get_velocity_data,
     get_cycle_time_data,
     get_sprint_burndown_data,
-    get_ai_adoption_by_team,
+    get_ai_adoption_percentage_by_team,
     get_activity_trend_data
 )
 
@@ -221,7 +221,7 @@ def create_dashboard_agile():
             ], width=6),
             dbc.Col([
                 html.H5("AI Adoption by Team"),
-                dcc.Graph(figure=px.bar(get_ai_adoption_by_team(), x="Team", y="Adoption",
+                dcc.Graph(figure=px.bar(get_ai_adoption_percentage_by_team(), x="Team", y="Adoption",
                     title="AI Adoption (%)").update_layout(height=350))
             ], width=6)
         ])

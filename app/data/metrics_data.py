@@ -66,11 +66,11 @@ def get_velocity_data():
 def get_sprint_burndown_data():
     return fetch_data_from_db("sprint_burndown_data")
 
-def get_ai_adoption_by_team():
-    return fetch_data_from_db("ai_adoption_by_team")
+def get_agile_adoption_by_team():
+    return fetch_data_from_db("agile_adoption_by_team_data")
 
 def get_ai_adoption_data():
-    return fetch_data_from_db("ai_adoption_data")
+    return fetch_data_from_db("agile_adoption_by_team_data")
 
 def get_time_saving_by_role():
     return fetch_data_from_db("time_saving_by_role")
@@ -78,6 +78,8 @@ def get_time_saving_by_role():
 def get_time_saving_by_role_trend():
     return fetch_data_from_db("time_saving_by_role_trend")
 
+def get_ai_adoption_percentage_by_team():
+    return fetch_data_from_db("ai_adoption_percentage_by_team_data")
 
 
 

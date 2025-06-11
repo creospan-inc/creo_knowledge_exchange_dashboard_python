@@ -1,9 +1,12 @@
+import app.layouts.dora.deployment_frequency
+from app.app_routes import layout, register_callbacks
 import os
 import sys
 from pathlib import Path
 
 import dash
 import dash_bootstrap_components as dbc
+
 # Make sure the project root directory is in the Python path
 current_file = Path(__file__).resolve()
 project_root = current_file.parent.parent  # Go up one level from app/
@@ -11,10 +14,8 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 # Now the imports will work properly when run directly
-from app.app_routes import layout, register_callbacks
-import app.layouts.dora.deployment_frequency
 
-print(">>> deployment_frequency.py is being imported!")
+# print(">>> deployment_frequency.py is being imported!")
 
 # Initialize the Dash app with Bootstrap
 app = dash.Dash(
@@ -58,15 +59,18 @@ register_callbacks(app)
 # Initialize the server
 server = app.server
 
+
 def main():
     """Entry point for the application"""
     print("Starting AI Metrics Dashboard...")
     print("Access the dashboard at http://127.0.0.1:8050/")
     app.run(debug=True, port=8050)
-    
+
+
 # Run the app
 if __name__ == "__main__":
     main()
+
 
 def update_deployment_graph(selected_teams):
     print("🚨 CALLBACK TRIGGERED")

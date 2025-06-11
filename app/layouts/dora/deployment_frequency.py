@@ -1,4 +1,4 @@
-print(">>> deployment_frequency.py is being imported!")  # TOP-LEVEL DEBUG
+# print(">>> deployment_frequency.py is being imported!")  # TOP-LEVEL DEBUG
 
 from dash import html, dcc, Input, Output
 import dash_bootstrap_components as dbc
@@ -12,10 +12,10 @@ from app.components.team_selector import team_selector_dropdown
 
 # Load data once to populate dropdown safely
 df = get_deployment_frequency_data()
-print(">>> Initial DataFrame loaded in deployment_frequency.py:\n", df.head())
-print(">>> Columns:", df.columns)
+# print(">>> Initial DataFrame loaded in deployment_frequency.py:\n", df.head())
+# print(">>> Columns:", df.columns)
 team_ids = sorted(df['team_id'].dropna().unique()) if not df.empty else []
-print(">>> Team IDs for dropdown:", team_ids)
+# print(">>> Team IDs for dropdown:", team_ids)
 
 layout = html.Div([
     html.H1("Deployment Frequency", className="main-header mb-2"),

@@ -27,6 +27,8 @@ from .layouts.agile.ai_adoption import layout as agile_ai_adoption_layout
 
 # AI Metrics
 from .layouts.ai.time_saving_by_role import layout as ai_time_saving_by_role_layout
+from .layouts.ai.ai_adoption_percentage import layout as ai_adoption_percentage_layout
+
 
 # Settings
 from .layouts.settings import layout as settings_layout
@@ -34,7 +36,9 @@ from .layouts.settings import layout as settings_layout
 # Ensure callbacks in dashboard.py are registered
 from .layouts import dashboard
 
-from app.data.metrics_data import get_failure_rate_data, get_lead_time_data, get_restore_time_data, get_velocity_data, get_cycle_time_data, get_sprint_burndown_data, get_activity_trend_data, get_efficiency_trend_data, get_satisfaction_data, get_performance_data, get_communication_data
+from app.data.metrics_data import get_failure_rate_data, get_lead_time_data, get_restore_time_data, get_velocity_data, \
+    get_cycle_time_data, get_sprint_burndown_data, get_activity_trend_data, get_efficiency_trend_data, \
+    get_satisfaction_data, get_performance_data, get_communication_data, get_ai_adoption_percentage_by_team
 
 # 🌐 Main layout structure
 layout = html.Div([
@@ -71,6 +75,8 @@ def register_callbacks(app):
 
         elif pathname == '/ai/time-saving-by-role':
             content.append(ai_time_saving_by_role_layout)
+        elif pathname == '/ai/adoption-percentage':
+            content.append(ai_adoption_percentage_layout)
 
         elif pathname == '/dora/deployment-frequency':
             content.append(deployment_frequency.layout)
@@ -173,9 +179,9 @@ def register_callbacks(app):
     def update_deployment_graph(selected_teams):
         print("CALLBACK TRIGGERED", selected_teams)
         df = deployment_frequency.get_deployment_frequency_data()
-        print("DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty:
             print("⚠️ No data returned from get_deployment_frequency_data()")
             return px.bar(title="No Data Available")
@@ -200,9 +206,9 @@ def register_callbacks(app):
     def update_failure_rate_graph(selected_teams):
         print("FAILURE RATE CALLBACK TRIGGERED", selected_teams)
         df = get_failure_rate_data()
-        print("Failure Rate DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("Failure Rate DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty:
             print("⚠️ No data returned from get_failure_rate_data()")
             return px.bar(title="No Data Available")
@@ -227,9 +233,9 @@ def register_callbacks(app):
     def update_lead_time_graph(selected_teams):
         print("LEAD TIME CALLBACK TRIGGERED", selected_teams)
         df = get_lead_time_data()
-        print("Lead Time DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("Lead Time DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty:
             print("⚠️ No data returned from get_lead_time_data()")
             return px.line(title="No Data Available")
@@ -253,9 +259,9 @@ def register_callbacks(app):
     def update_restore_time_graph(selected_teams):
         print("RESTORE TIME CALLBACK TRIGGERED", selected_teams)
         df = get_restore_time_data()
-        print("Restore Time DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("Restore Time DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty:
             print("⚠️ No data returned from get_restore_time_data()")
             return px.line(title="No Data Available")
@@ -277,16 +283,16 @@ def register_callbacks(app):
         Input('velocity-team-selector', 'value')
     )
     def update_velocity_graph(selected_teams):
-        print("VELOCITY CALLBACK TRIGGERED", selected_teams)
+        # print("VELOCITY CALLBACK TRIGGERED", selected_teams)
         df = get_velocity_data()
-        print("Velocity DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("Velocity DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty:
             print("⚠️ No data returned from get_velocity_data()")
             return px.bar(title="No Data Available")
         filtered_df = df[df['team_id'].astype(str).isin([str(t) for t in selected_teams])]
-        print("Filtered DataFrame:\n", filtered_df)
+        # print("Filtered DataFrame:\n", filtered_df)
         if filtered_df.empty:
             print("⚠️ No data for selected teams:", selected_teams)
             return px.bar(title="No Data for Selected Teams")
@@ -304,11 +310,11 @@ def register_callbacks(app):
         Input('cycle-time-team-selector', 'value')
     )
     def update_cycle_time_graph(selected_teams):
-        print("CYCLE TIME CALLBACK TRIGGERED", selected_teams)
+        # print("CYCLE TIME CALLBACK TRIGGERED", selected_teams)
         df = get_cycle_time_data()
-        print("Cycle Time DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("Cycle Time DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty:
             print("⚠️ No data returned from get_cycle_time_data()")
             return px.line(title="No Data Available")
@@ -330,11 +336,11 @@ def register_callbacks(app):
         Input('sprint-burndown-team-selector', 'value')
     )
     def update_sprint_burndown_graph(selected_teams):
-        print("SPRINT BURNDOWN CALLBACK TRIGGERED", selected_teams)
+        # print("SPRINT BURNDOWN CALLBACK TRIGGERED", selected_teams)
         df = get_sprint_burndown_data()
-        print("Sprint Burndown DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("Sprint Burndown DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty:
             print("⚠️ No data returned from get_sprint_burndown_data()")
             return px.line(title="No Data Available")
@@ -356,11 +362,11 @@ def register_callbacks(app):
         Input('activity-team-selector', 'value')
     )
     def update_activity_graph(selected_teams):
-        print("ACTIVITY CALLBACK TRIGGERED", selected_teams)
+        # print("ACTIVITY CALLBACK TRIGGERED", selected_teams)
         df = get_activity_trend_data()
-        print("Activity DataFrame preview:\n", df.head())
-        print("Columns:", df.columns)
-        print("Selected teams:", selected_teams)
+        # print("Activity DataFrame preview:\n", df.head())
+        # print("Columns:", df.columns)
+        # print("Selected teams:", selected_teams)
         if df.empty or 'team_id' not in df.columns:
             print("⚠️ No data returned from get_activity_trend_data() or missing 'team_id'")
             return px.line(title="No Data Available")
@@ -382,11 +388,11 @@ def register_callbacks(app):
         Input('efficiency-team-selector', 'value')
     )
     def update_efficiency_graph(selected_teams):
-        print("EFFICIENCY CALLBACK TRIGGERED", selected_teams)
+        # print("EFFICIENCY CALLBACK TRIGGERED", selected_teams)
         df = get_efficiency_trend_data()
-        print("Efficiency DataFrame preview:\n", df.head())
-        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
-        print("Selected teams:", selected_teams)
+        # print("Efficiency DataFrame preview:\n", df.head())
+        # print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        # print("Selected teams:", selected_teams)
         if df.empty or 'team_id' not in df.columns:
             print("⚠️ No data returned from get_efficiency_trend_data() or missing 'team_id'")
             return px.line(title="No Data Available")
@@ -410,11 +416,11 @@ def register_callbacks(app):
         Input('satisfaction-team-selector', 'value')
     )
     def update_satisfaction_graph(selected_teams):
-        print("SATISFACTION CALLBACK TRIGGERED", selected_teams)
+        # print("SATISFACTION CALLBACK TRIGGERED", selected_teams)
         df = get_satisfaction_data()
-        print("Satisfaction DataFrame preview:\n", df.head())
-        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
-        print("Selected teams:", selected_teams)
+        # print("Satisfaction DataFrame preview:\n", df.head())
+        # print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        # print("Selected teams:", selected_teams)
         if df.empty or 'team_id' not in df.columns:
             print("⚠️ No data returned from get_satisfaction_data() or missing 'team_id'")
             return px.line(title="No Data Available")
@@ -438,11 +444,11 @@ def register_callbacks(app):
         Input('performance-team-selector', 'value')
     )
     def update_performance_graph(selected_teams):
-        print("PERFORMANCE CALLBACK TRIGGERED", selected_teams)
+        # print("PERFORMANCE CALLBACK TRIGGERED", selected_teams)
         df = get_performance_data()
-        print("Performance DataFrame preview:\n", df.head())
-        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
-        print("Selected teams:", selected_teams)
+        # print("Performance DataFrame preview:\n", df.head())
+        # print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        # print("Selected teams:", selected_teams)
         if df.empty or 'team_id' not in df.columns:
             print("⚠️ No data returned from get_performance_data() or missing 'team_id'")
             return px.line(title="No Data Available")
@@ -466,11 +472,11 @@ def register_callbacks(app):
         Input('communication-team-selector', 'value')
     )
     def update_communication_graph(selected_teams):
-        print("COMMUNICATION CALLBACK TRIGGERED", selected_teams)
+        # print("COMMUNICATION CALLBACK TRIGGERED", selected_teams)
         df = get_communication_data()
-        print("Communication DataFrame preview:\n", df.head())
-        print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
-        print("Selected teams:", selected_teams)
+        # print("Communication DataFrame preview:\n", df.head())
+        # print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        # print("Selected teams:", selected_teams)
         if df.empty or 'team_id' not in df.columns:
             print("⚠️ No data returned from get_communication_data() or missing 'team_id'")
             return px.line(title="No Data Available")
@@ -487,4 +493,31 @@ def register_callbacks(app):
             y='Collaboration',
             color='team_id',
             title="Collaboration Over Time by Team"
+        )
+
+    # In register_callbacks:
+    @app.callback(
+        Output('ai-adoption-percentage-graph', 'figure'),
+        Input('ai-adoption-percentage-team-selector', 'value')
+    )
+    def update_ai_adoption_percentage_graph(selected_teams):
+        print("AI % Adoption CALLBACK TRIGGERED", selected_teams)
+        df = get_ai_adoption_percentage_by_team()
+        # print("AI % DataFrame preview:\n", df.head())
+        # print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        # print("Selected teams:", selected_teams)
+        if df.empty or 'team_id' not in df.columns:
+            print("⚠️ No data returned from get_a or missing 'team_id'")
+            return px.bar(title="No Data Available")
+        df['team_id'] = df['team_id'].astype(str).str.strip()
+        selected_teams = [str(t).strip() for t in selected_teams]
+        filtered_df = df[df['team_id'].isin(selected_teams)]
+        print("Filtered DataFrame:\n", filtered_df)
+        return px.bar(
+            filtered_df,
+            x='Month',
+            y='Adoption_Rate',
+            color='team_id',
+            barmode='group',
+            title="Adoption % by Team"
         )

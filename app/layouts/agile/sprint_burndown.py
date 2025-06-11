@@ -6,9 +6,9 @@ from app.components.team_selector import team_selector_dropdown
 
 # Load data once to populate dropdown safely
 df = get_sprint_burndown_data()
-print("Sprint Burndown DataFrame loaded in layout:", df.head())
+# print("Sprint Burndown DataFrame loaded in layout:", df.head())
 team_ids = sorted(df['team_id'].dropna().unique()) if not df.empty else []
-print("Team IDs for dropdown:", team_ids)
+# print("Team IDs for dropdown:", team_ids)
 
 layout = html.Div([
     html.H1("Sprint Burndown", className="main-header mb-2"),
