@@ -28,7 +28,7 @@ from .layouts.agile.ai_adoption import layout as agile_ai_adoption_layout
 # AI Metrics
 from .layouts.ai.time_saving_by_role import layout as ai_time_saving_by_role_layout
 from .layouts.ai.ai_adoption_percentage import layout as ai_adoption_percentage_layout
-
+from .layouts.ai.ai_maturity_by_team import layout as ai_maturity_by_team_layout
 
 # Settings
 from .layouts.settings import layout as settings_layout
@@ -77,7 +77,10 @@ def register_callbacks(app):
             content.append(ai_time_saving_by_role_layout)
         elif pathname == '/ai/adoption-percentage':
             content.append(ai_adoption_percentage_layout)
+        elif pathname == '/ai/maturity-stage':
+            content.append(ai_maturity_by_team_layout)
 
+        #     Dora Metrics
         elif pathname == '/dora/deployment-frequency':
             content.append(deployment_frequency.layout)
         elif pathname == '/dora/lead-time':
@@ -520,4 +523,29 @@ def register_callbacks(app):
             color='team_id',
             barmode='group',
             title="Adoption % by Team"
+        )
+
+    def update_ai_maturity_by_team_graph(selected_teams):
+        print("AI % Adoption CALLBACK TRIGGERED", selected_teams)
+        df = get_ai_adoption_percentage_by_team()
+        # print("AI % DataFrame preview:\n", df.head())
+        # print("Unique team_ids in df:", df['team_id'].unique() if 'team_id' in df.columns else "No team_id column")
+        # print("Selected teams:", selected_teams)
+        if df.empty or 'team_id' not in df.columns:
+            print("⚠️ No data returned from get_a or missing 'team_id'")
+            return px.bar(title="No Data Available")
+        df['team_id'] = df['team_id'].astype(str).str.strip()
+        selected_teams = [str(t).strip() for t in selected_teams]
+        filtered_df = df[df['team_id'].isin(selected_teams)]
+        print("Filtered DataFrame:\n", filtered_df)
+        if filtered_df.empty:
+            print("⚠️ No data for selected teams:", selected_teams)
+            return px.line(title="No Data for Selected Teams")
+        return px.bar(
+            filtered_df,
+            x='Month',
+            y='Maturity_Stage',
+            color='team_id',
+            barmode='group',
+            title="Maturity Stage by Team"
         )

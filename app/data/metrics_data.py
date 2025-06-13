@@ -81,6 +81,9 @@ def get_time_saving_by_role_trend():
 def get_ai_adoption_percentage_by_team():
     return fetch_data_from_db("ai_adoption_percentage_by_team_data")
 
+def get_ai_maturity_by_team():
+    return fetch_data_from_db("ai_maturity_by_team_data")
+
 
 
 
